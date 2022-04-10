@@ -1,5 +1,6 @@
 <?php
 
+use GuzzleHttp\Psr7\Uri;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,4 +16,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::get('/inicio', function()
+{
+    return view('inicio');
 });

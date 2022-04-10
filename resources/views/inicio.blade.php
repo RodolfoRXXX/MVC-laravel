@@ -1,8 +1,5 @@
-@include( 'layouts.header' )
-@include( 'layouts.nav' )
+@extends( 'layouts.plantilla' )
 
-    <main class="container py-4">
-        desarrollo
-    </main>
-
-@include( 'layouts.footer' )
+@section( 'contenido' )
+        <h1>Contenido de la app</h1>
+@endsection

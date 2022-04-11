@@ -1,6 +1,7 @@
 <?php
 
 use GuzzleHttp\Psr7\Uri;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,3 +22,16 @@ Route::get('/', function () {
 Route::get('/inicio', function(){
     return view('inicio');
 });
+
+##### CRUD de regiones
+Route::get('/regiones', function () {
+    //obtenemos listado de regiones
+    
+    /*$regiones = DB::select('SELECT idRegion, regNombre
+                                FROM regiones');
+    */
+    $regiones = DB::table('regiones')->get();
+
+    return view('regiones', [ 'regiones'=>$regiones ]);
+});
+

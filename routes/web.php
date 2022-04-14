@@ -35,3 +35,7 @@ Route::get('/regiones', function () {
     return view('regiones', [ 'regiones'=>$regiones ]);
 });
 
+Route::get('/destinos', function(){
+    $destinos = DB::select("SELECT destinos.*, regiones.regNombre FROM destinos, regiones WHERE destinos.idRegion = regiones.idRegion");
+    return view('destinos', ['destinos' => $destinos]);
+});

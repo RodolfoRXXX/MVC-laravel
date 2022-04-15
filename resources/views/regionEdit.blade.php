@@ -8,8 +8,8 @@
         @csrf
             <div class="form-group">
                 <label for="regNombre">Nombre de la región</label>
-                <input type="text" name="regNombre"
-                       value="{{ $region->regNombre }}"
+                <input value="{{ $region->regNombre }}"
+                       type="text" name="regNombre"
                        class="form-control" id="regNombre" required>
             </div>
             <input type="hidden" name="idRegion"

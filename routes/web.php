@@ -28,17 +28,15 @@ Route::get('/regiones', function () {
     //obtenemos listado de regiones
     
     /*$regiones = DB::select('SELECT idRegion, regNombre
-                                FROM regiones');
+                                FROM regiones'); //raw sql
     */
-    $regiones = DB::table('regiones')->get();
+    $regiones = DB::table('regiones')->get();//query builder
 
     return view('regiones', [ 'regiones'=>$regiones ]);
 });
-
 Route::get('region/create', function(){
     return view('regionCreate');
 });
-
 Route::post('/region/store', function(){
     $regNombre = request()->regNombre;
     //Insertamos el valor del formulario
@@ -54,25 +52,44 @@ Route::post('/region/store', function(){
         ->insert([ 'regNombre'=>$regNombre, 'k'=>$v ]);*/
 
     return redirect('/regiones')
-            ->with(['mensaje'=>'Region '.$regNombre.' ha sido agregada correctamente']);
+            ->with(['mensaje'=>'Región '.$regNombre.' ha sido agregada correctamente']);
 });
-Route::get('/region/edit/{id}', function($id){//{id} es un dato dinámico/las variables en function van por orden de la URI
-    //Obtenemos los datos de una región
-    $region = DB::select(
-            'SELECT idRegion, regNombre 
-            FROM regiones
-            WHERE idRegion = :idRegion',
-            [$id]
-    );
-    /*$region = DB::table('regiones)
-                ->where( 'idRegion', $id )
-                ->first();*/
-    //Retornamos la vista con los datos del formulario formado
-    return view('regionEdit', ['region' => $region]);
+Route::get('/region/edit/{id}', function ($id)//Rellena los campos con los valores de la db
+{
+    //obtenemos datos de la región por su ID
+    /*$region = DB::select('SELECT idRegion, regNombre
+                            FROM regiones
+                            WHERE idRegion = :idRegion',
+                        [ $id ]);*/
+    $region = DB::table('regiones')
+                    ->where( 'idRegion', $id )
+                    ->first(); //fetch
+    //retornamos vista del formulario con sus datos cargados
+    return view('regionEdit', [ 'region' => $region ]);
+});
+Route::post('/region/update', function(){
+    $idRegion  = request()->idRegion;
+    $regNombre = request()->regNombre;
+    /*DB::update('UPDATE regiones
+                SET
+                    regNombre = :regNombre
+                WHERE idRegion = :idRegion',
+                [$regNombre, $idRegion]);*/
+    //query builder
+    DB::table('regiones')
+          ->where( 'idRegion', $idRegion )
+          ->update( [ 'regNombre'=>$regNombre ] );
+
+    return redirect('/regiones')
+            ->with(['mensaje'=>'Región '.$regNombre.' ha sido modificada']);
 });
 
-##### CRUD de regiones
+
+##### CRUD de destinos
 Route::get('/destinos', function(){
     $destinos = DB::select("SELECT destinos.*, regiones.regNombre FROM destinos, regiones WHERE destinos.idRegion = regiones.idRegion");
     return view('destinos', ['destinos' => $destinos]);
+});
+Route::get('/destino/create', function(){
+    return view('destinoCreate');
 });

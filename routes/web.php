@@ -56,6 +56,20 @@ Route::post('/region/store', function(){
     return redirect('/regiones')
             ->with(['mensaje'=>'Region '.$regNombre.' ha sido agregada correctamente']);
 });
+Route::get('/region/edit/{id}', function($id){//{id} es un dato dinámico/las variables en function van por orden de la URI
+    //Obtenemos los datos de una región
+    $region = DB::select(
+            'SELECT idRegion, regNombre 
+            FROM regiones
+            WHERE idRegion = :idRegion',
+            [$id]
+    );
+    /*$region = DB::table('regiones)
+                ->where( 'idRegion', $id )
+                ->first();*/
+    //Retornamos la vista con los datos del formulario formado
+    return view('regionEdit', ['region' => $region]);
+});
 
 ##### CRUD de regiones
 Route::get('/destinos', function(){

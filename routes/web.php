@@ -91,5 +91,69 @@ Route::get('/destinos', function(){
     return view('destinos', ['destinos' => $destinos]);
 });
 Route::get('/destino/create', function(){
-    return view('destinoCreate');
+    $regiones = DB::table('regiones')
+                ->select('idRegion', 'regNombre')
+                ->get();
+    return view('destinoCreate', ['regiones'=>$regiones]);
+});
+Route::post('/destino/store', function(){
+    $destNombre      = request()->destNombre;
+    $idRegion        = request()->idRegion;
+    $destPrecio      = request()->destPrecio;
+    $destAsientos    = request()->destAsientos;
+    $destDisponibles = request()->destDisponibles;
+        DB::table('destinos')
+            ->insert(['destNombre'     =>$destNombre,
+                      'idRegion'       =>$idRegion,
+                      'destPrecio'     =>$destPrecio,
+                      'destAsientos'   =>$destAsientos,
+                      'destDisponibles'=>$destDisponibles]);
+        
+        return redirect('/destinos')
+               ->with(['mensaje'=>'El destino '.$destNombre.' ha sido creado.']);
+});
+Route::get('/destino/edit/{id}', function($idDestino){
+    $regiones = DB::table('regiones')
+                ->get();
+    $destinos = DB::table('destinos')
+               ->where('idDestino', $idDestino)
+               ->first();
+        return view('/destinoEdit', ['regiones'=>$regiones,
+                                     'destinos'=>$destinos
+                                    ]);
+});
+Route::post('/destino/update', function(){
+    $idDestino       = request()->idDestino;
+    $destNombre      = request()->destNombre;
+    $idRegion        = request()->idRegion;
+    $destPrecio      = request()->destPrecio;
+    $destAsientos    = request()->destAsientos;
+    $destDisponibles = request()->destDisponibles;
+        DB::table('destinos')
+            ->where('idDestino', $idDestino)
+            ->update(
+                    ['destNombre'     =>$destNombre,
+                      'idRegion'       =>$idRegion,
+                      'destPrecio'     =>$destPrecio,
+                      'destAsientos'   =>$destAsientos,
+                      'destDisponibles'=>$destDisponibles
+                    ]);
+        
+        return redirect('/destinos')
+               ->with(['mensaje'=>'El destino '.$destNombre.' ha sido modificado.']);
+});
+Route::get('/destino/delete/{id}', function($id){
+    $destinos = DB::table('destinos')
+                ->where('idDestino', $id)
+                ->first();
+        return view('destinoDelete', ['destinos'=>$destinos]);
+});
+Route::post('/destino/destroy', function(){
+    $destNombre = request()->destNombre;
+    $idDestino   = request()->idDestino;
+    DB::table('destinos')
+        ->where('idDestino', $idDestino)
+        ->delete();
+        return redirect('/destinos')
+               ->with(['mensaje'=>'El destino '.$destNombre.' ha sido eliminado']);
 });

@@ -18,7 +18,7 @@
         <div class="col text-end">
             <a href="/destino/create" class="btn btn-outline-secondary">
                 <i class="bi bi-plus-square"></i>
-                Agregar
+                Agregar destino
             </a>
         </div>
     </div>
@@ -43,11 +43,11 @@
                 </p>
             </div>
             <div class="col text-end btn-group">
-                <a href="#" class="btn btn-outline-secondary me-1">
+                <a href="/destino/edit/{{ $destino->idDestino }}" class="btn btn-outline-secondary me-1">
                     <i class="bi bi-pencil-square"></i>
                     Modificar
                 </a>
-                <a href="#" class="btn btn-outline-secondary me-1">
+                <a href="/destino/delete/{{ $destino->idDestino }}" class="btn btn-outline-secondary me-1">
                     <i class="bi bi-trash"></i>
                     &nbsp;Eliminar&nbsp;
                 </a>
